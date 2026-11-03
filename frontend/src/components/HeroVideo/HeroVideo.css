@@ -1,0 +1,15 @@
+.hero { position: relative; height: min(750px, 82vw); min-height: 490px; margin: 12px 12px 0; background: #003747; overflow: hidden; }
+.hero__video, .hero__shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero__video { object-fit: cover; }
+.hero__shade { background: linear-gradient(90deg,#001c2bb8 0%,#001c2b50 60%,#001c2b18 100%); opacity: 0; transition: opacity .3s ease; pointer-events: none; }
+.hero__content { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; color: #fff; opacity: 0; visibility: hidden; transition: opacity .3s ease, visibility .3s ease; }
+.hero:hover .hero__shade, .hero:focus-within .hero__shade { opacity: 1; }
+.hero:hover .hero__content, .hero:focus-within .hero__content { opacity: 1; visibility: visible; }
+.hero__eyebrow { text-transform: uppercase; letter-spacing: 3px; font-weight: 800; }
+.hero h1 { margin: 12px 0; font: 800 clamp(48px,8vw,126px)/.9 'Barlow Condensed',sans-serif; text-transform: uppercase; }
+.hero__content > p:not(.hero__eyebrow) { font-size: clamp(16px,2vw,22px); }
+@media (hover: none) { .hero__shade, .hero__content { opacity: 1; visibility: visible; } }
+@media(max-width:700px) { .hero { margin: 0; min-height: 500px; } .hero__content { padding-top: 30px; } }
+
+/* La vidéo occupe l'écran initial : le slogan apparaît après défilement. */
+@media(min-width: 701px) { .hero { height: calc(100svh - 138px); min-height: 600px; max-height: none; } }

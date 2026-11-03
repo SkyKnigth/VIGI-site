@@ -1,0 +1,9 @@
+.photo-slider { position: relative; height: 470px; background: #003747; overflow: hidden; }
+.photo-slider > img { width: 100%; height: 100%; object-fit: cover; }
+.photo-slider__caption { position: absolute; left: 8%; bottom: 55px; color: white; background: #003747b8; padding: 12px 20px; font: 800 28px Barlow Condensed,sans-serif; text-transform: uppercase; }
+.photo-slider__prev,.photo-slider__next { position: absolute; top: 45%; border: 0; color: white; background: #003747a8; padding: 15px; }
+.photo-slider__prev { left: 0; } .photo-slider__next { right: 0; }
+.photo-slider__dots { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
+.photo-slider__dots button { width: 36px; height: 5px; border: 0; background: #ffffffb5; }
+.photo-slider__dots button.is-active { background: #e5243b; }
+@media(max-width:700px) { .photo-slider { height: 300px; } }

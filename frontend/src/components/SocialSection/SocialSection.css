@@ -1,0 +1,7 @@
+.social-section h2 { text-align: center; color: #40516b; font: 700 52px Barlow Condensed,sans-serif; margin: 0 0 50px; }
+.social-section__grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 22px; }
+.social-section__card { text-align: center; padding: 35px 14px; border: 1px solid #d8e0e5; min-height: 210px; }
+.social-section__card svg { color: #003747; }
+.social-section__card h3 { font-size: 19px; }
+.social-section__card p { font-size: 13px; color: #687783; }
+@media(max-width:800px) { .social-section__grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
