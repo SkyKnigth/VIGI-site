@@ -33,6 +33,10 @@ jobs:
 
       - name: Build React
         working-directory: frontend
+        env:
+          VITE_EMAILJS_SERVICE_ID: ${{ vars.VITE_EMAILJS_SERVICE_ID }}
+          VITE_EMAILJS_TEMPLATE_ID: ${{ vars.VITE_EMAILJS_TEMPLATE_ID }}
+          VITE_EMAILJS_PUBLIC_KEY: ${{ vars.VITE_EMAILJS_PUBLIC_KEY }}
         run: npm run build -- --base=/VIGI-site/
 
       - name: Setup Pages
