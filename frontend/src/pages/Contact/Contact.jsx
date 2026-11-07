@@ -269,11 +269,6 @@ export default function Contact() {
                 </p>
               )}
 
-              {/* Diagnostic temporaire : à supprimer après correction */}
-              <p className="muted">
-                Diagnostic EmailJS — Service ID : {serviceDiagnostic}
-              </p>
-
               <p className="muted contact-form__disclaimer">
                 Les informations transmises sont utilisées
                 pour répondre à votre demande.
