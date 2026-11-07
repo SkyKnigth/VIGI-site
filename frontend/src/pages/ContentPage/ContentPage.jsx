@@ -7,27 +7,25 @@ import './ContentPage.css';
 
 const VIDEOS = [
   {
-    id: 'parisien-boucliers-2026',
-    title: 'Boucliers stroboscopiques : la nouvelle arme anti-foule de la police',
-    published_at: '2026-10-07',
-    source: 'Le Parisien',
-    external_url: 'https://www.dailymotion.com/video/xbjlbou',
-    embed_url: 'https://www.dailymotion.com/embed/video/xbjlbou',
-    image_url: 'https://www.dailymotion.com/thumbnail/video/xbjlbou',
+    id: 'video-1',
+    youtubeId: 'ou2Hz8h-Jog',
+    title: 'Vidéo VIGI – 1',
+    source: 'YouTube',
+    date: '',
   },
   {
-    id: 'gigou-violences-2019',
-    title: 'Jérôme Gigou : les violences contre les policiers',
-    published_at: '2019-08-28',
-    source: 'Entretien relayé par Nouvelles de France',
-    external_url: 'https://ndf.fr/poing-de-vue/28-08-2019/les-policiers-en-ont-ras-le-bol-de-servir-de-punching-ball/',
+    id: 'video-2',
+    youtubeId: 's6VHSStr-yY',
+    title: 'Vidéo VIGI – 2',
+    source: 'YouTube',
+    date: '',
   },
   {
-    id: 'gigou-lbd-2019',
-    title: 'Jérôme Gigou : l’utilisation des LBD en manifestation',
-    published_at: '2019-06-13',
-    source: 'Entretien vidéo (archive)',
-    external_url: 'https://french.ava360.com/jerome-gigou-vigi-police-%C2%ABle-lbd-ne-devrait-pas-etre-utilise-pour-les-manifestations%C2%BB_8e6b479b8.html',
+    id: 'video-3',
+    youtubeId: 'H-ZxNdt1GqY',
+    title: 'Vidéo VIGI – 3',
+    source: 'YouTube',
+    date: '',
   },
 ];
 
@@ -40,28 +38,48 @@ export default function ContentPage({ type, title }) {
   const [year, setYear] = useState('all');
 
   const isVideo = type === 'video';
-  const sourceItems = isVideo ? VIDEOS : items;
+  const sourceItems = isVideo ? VIDEOS : items || [];
 
-  const filtered = sourceItems.filter(
-    (item) =>
-      item.title
-        .toLocaleLowerCase('fr')
-        .includes(search.toLocaleLowerCase('fr')) &&
-      (!isVideo ||
-        year === 'all' ||
-        item.published_at.startsWith(year))
-  );
+  const normalizedSearch = search.trim().toLocaleLowerCase('fr');
+
+  const years = isVideo
+    ? [...new Set(
+        VIDEOS
+          .filter((video) => video.date)
+          .map((video) => video.date.slice(0, 4))
+      )].sort((a, b) => b.localeCompare(a))
+    : [];
+
+  const filtered = sourceItems.filter((item) => {
+    const searchableText = [
+      item.title,
+      item.source,
+      item.summary,
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .toLocaleLowerCase('fr');
+
+    const matchesSearch = searchableText.includes(normalizedSearch);
+
+    const matchesYear =
+      !isVideo ||
+      year === 'all' ||
+      (item.date || '').startsWith(year);
+
+    return matchesSearch && matchesYear;
+  });
 
   return (
     <main className="container content-page">
       <div className="page-intro">
         <h1 className="page-title">
-          {isVideo ? 'VIGI dans les médias' : title}
+          {isVideo ? 'Nos vidéos' : title}
         </h1>
 
         <p>
           {isVideo
-            ? 'Retrouvez les interventions vidéo et prises de parole des représentants de VIGI.'
+            ? 'Retrouvez les vidéos et interventions de VIGI.'
             : 'Retrouvez les publications officielles de VIGI.'}
         </p>
       </div>
@@ -87,31 +105,76 @@ export default function ContentPage({ type, title }) {
               onChange={(event) => setYear(event.target.value)}
             >
               <option value="all">Toutes</option>
-              <option value="2026">2026</option>
-              <option value="2019">2019</option>
+
+              {years.map((availableYear) => (
+                <option
+                  key={availableYear}
+                  value={availableYear}
+                >
+                  {availableYear}
+                </option>
+              ))}
             </select>
           </label>
         )}
       </div>
 
-      {!isVideo && loading && <p>Chargement…</p>}
+      {!isVideo && loading && (
+        <p>Chargement…</p>
+      )}
 
-      {!isVideo && error && <p role="alert">{error}</p>}
+      {!isVideo && error && (
+        <p role="alert">{error}</p>
+      )}
 
       {(isVideo || (!loading && !error)) &&
         filtered.length === 0 && (
-          <p className="empty-state">
-            Aucune publication disponible pour le moment.
-          </p>
+          <div
+            className="content-page__empty"
+            role="status"
+          >
+            <h2>
+              {normalizedSearch
+                ? 'Aucun résultat trouvé'
+                : isVideo
+                  ? 'Aucune vidéo disponible'
+                  : 'Aucune publication disponible'}
+            </h2>
+
+            <p>
+              {normalizedSearch
+                ? `Aucune vidéo ou publication ne correspond à « ${search.trim()} ». Essayez un autre mot-clé.`
+                : 'Aucun contenu ne correspond aux filtres sélectionnés.'}
+            </p>
+
+            {(normalizedSearch || year !== 'all') && (
+              <button
+                type="button"
+                className="content-page__reset"
+                onClick={() => {
+                  setSearch('');
+                  setYear('all');
+                }}
+              >
+                Effacer les filtres
+              </button>
+            )}
+          </div>
         )}
 
-      <div className="card-grid content-page__grid">
+      <div className="content-page__grid">
         {(isVideo || (!loading && !error)) &&
           filtered.map((item) =>
             isVideo ? (
-              <VideoCard item={item} key={item.id} />
+              <VideoCard
+                key={item.id}
+                item={item}
+              />
             ) : type === 'tract' ? (
-              <TractCard item={item} key={item.id} />
+              <TractCard
+                key={item.id}
+                item={item}
+              />
             ) : (
               <article
                 className="content-page__article"
@@ -133,14 +196,6 @@ export default function ContentPage({ type, title }) {
             )
           )}
       </div>
-
-      {isVideo && (
-        <p className="content-page__copyright">
-          Les vidéos restent hébergées par leurs médias
-          d'origine. Certaines peuvent être regardées
-          directement sur cette page.
-        </p>
-      )}
     </main>
   );
 }

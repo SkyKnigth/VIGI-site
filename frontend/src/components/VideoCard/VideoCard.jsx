@@ -1,94 +1,82 @@
 
 import { useState } from 'react';
-import { Play, ExternalLink } from 'lucide-react';
 import './VideoCard.css';
 
-export default function VideoCard({ item, featured = false }) {
+export default function VideoCard({ item }) {
   const [playing, setPlaying] = useState(false);
   const [imageFailed, setImageFailed] = useState(false);
-  const canEmbed = Boolean(item.embed_url);
+
+  const videoId = item.youtubeId;
+  const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+  const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
   return (
-    <article className={`video-card ${featured ? 'video-card--featured' : ''}`}>
+    <article className="video-card">
       <div className="video-card__media">
-        {playing && canEmbed ? (
+        {playing ? (
           <iframe
             title={item.title}
-            src={item.embed_url}
-            allow="autoplay; fullscreen; picture-in-picture; web-share"
-            allowFullScreen
+            src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
           />
         ) : (
           <>
-            {item.image_url && !imageFailed ? (
+            {!imageFailed ? (
               <img
-                src={item.image_url}
+                src={thumbnail}
                 alt=""
                 loading="lazy"
                 onError={() => setImageFailed(true)}
               />
             ) : (
-              <span className="video-card__placeholder">
+              <div className="video-card__placeholder">
                 VIGI
-                <small>Dans les médias</small>
-              </span>
+              </div>
             )}
 
-            {canEmbed ? (
-              <button
-                className="video-card__trigger"
-                type="button"
-                onClick={() => setPlaying(true)}
-                aria-label={`Lire la vidéo sur cette page : ${item.title}`}
-              >
-                <span className="video-card__play">
-                  <Play fill="currentColor" size={27} />
-                </span>
-              </button>
-            ) : (
-              <a
-                className="video-card__trigger"
-                href={item.external_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Voir la vidéo sur le site source : ${item.title}`}
-              >
-                <span className="video-card__play">
-                  <Play fill="currentColor" size={27} />
-                </span>
-              </a>
-            )}
+            <button
+              type="button"
+              className="video-card__trigger"
+              onClick={() => setPlaying(true)}
+              aria-label={`Lire ${item.title}`}
+            >
+              <span className="video-card__play">
+                ▶
+              </span>
+            </button>
           </>
         )}
       </div>
 
       <div className="video-card__body">
         <p className="video-card__source">
-          {item.source || 'VIGI'}
+          {item.source || 'YouTube'}
         </p>
 
         <h3>{item.title}</h3>
 
-        <time dateTime={item.published_at}>
-          {new Date(`${item.published_at}T12:00:00`).toLocaleDateString(
-            'fr-FR',
-            {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-            }
-          )}
-        </time>
+        {item.date && (
+          <time dateTime={item.date}>
+            {new Date(`${item.date}T12:00:00`).toLocaleDateString(
+              'fr-FR',
+              {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+              }
+            )}
+          </time>
+        )}
 
         <a
-          className="video-card__original"
-          href={item.external_url}
+          href={videoUrl}
           target="_blank"
           rel="noopener noreferrer"
+          className="video-card__original"
         >
-          Voir la source
-          <ExternalLink size={14} aria-hidden="true" />
+          Regarder sur YouTube
         </a>
       </div>
     </article>
