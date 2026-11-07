@@ -121,15 +121,23 @@ export default function Contact() {
             aria-label="Coordonnées et formulaire de contact"
           >
             <div className="contact-location">
-              <div className="contact-map">
-                <iframe
-                  title="Carte Google Maps – VIGI, Domont"
-                  src="https://www.google.com/maps?q=7%20rue%20Descartes%2C%2095330%20Domont&output=embed"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  allowFullScreen
-                />
+              <div className="contact-address-notice">
+                <h3>Adresse de correspondance</h3>
+                <p>
+                  L'adresse indiquée ci-dessous est uniquement destinée
+                  à la réception du courrier. VIGI ne dispose pas de
+                  locaux d'accueil du public à cette adresse.
+                </p>
               </div>
+                <div className="contact-map">
+                  <iframe
+                    title="Carte Google Maps – VIGI, Domont"
+                    src="https://www.google.com/maps?q=7%20rue%20Descartes%2C%2095330%20Domont&output=embed"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    allowFullScreen
+                  />
+                </div>
             </div>
 
             <form
