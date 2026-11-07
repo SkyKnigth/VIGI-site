@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import './VideoCard.css';
 
@@ -6,9 +5,8 @@ export default function VideoCard({ item }) {
   const [playing, setPlaying] = useState(false);
   const [imageFailed, setImageFailed] = useState(false);
 
-  const videoId = item.youtubeId;
-  const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
-  const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+  const videoUrl = `https://www.youtube.com/watch?v=${item.youtubeId}`;
+  const thumbnail = `https://img.youtube.com/vi/${item.youtubeId}/hqdefault.jpg`;
 
   return (
     <article className="video-card">
@@ -16,8 +14,8 @@ export default function VideoCard({ item }) {
         {playing ? (
           <iframe
             title={item.title}
-            src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            src={`https://www.youtube-nocookie.com/embed/${item.youtubeId}?autoplay=1`}
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
             allowFullScreen
           />
@@ -40,44 +38,34 @@ export default function VideoCard({ item }) {
               type="button"
               className="video-card__trigger"
               onClick={() => setPlaying(true)}
-              aria-label={`Lire ${item.title}`}
+              aria-label={`Lire la vidéo : ${item.title}`}
             >
-              <span className="video-card__play">
-                ▶
-              </span>
+              <span className="video-card__play">▶</span>
             </button>
           </>
         )}
       </div>
 
       <div className="video-card__body">
-        <p className="video-card__source">
-          {item.source || 'YouTube'}
-        </p>
-
-        <h3>{item.title}</h3>
+        <h3>
+          <a
+            href={videoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {item.title}
+          </a>
+        </h3>
 
         {item.date && (
           <time dateTime={item.date}>
-            {new Date(`${item.date}T12:00:00`).toLocaleDateString(
-              'fr-FR',
-              {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-              }
-            )}
+            {new Date(`${item.date}T12:00:00`).toLocaleDateString('fr-FR', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+            })}
           </time>
         )}
-
-        <a
-          href={videoUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="video-card__original"
-        >
-          Regarder sur YouTube
-        </a>
       </div>
     </article>
   );

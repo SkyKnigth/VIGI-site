@@ -1,7 +1,7 @@
 
 .content-page {
   min-height: 60vh;
-  padding-bottom: 100px;
+  padding-bottom: 0;
 }
 
 .content-page__controls {
@@ -10,6 +10,7 @@
   align-items: flex-end;
   gap: 20px;
   margin-bottom: 50px;
+  scroll-margin-top: 140px;
 }
 
 .content-page__filter {
@@ -43,6 +44,7 @@
 .content-page__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
   gap: 28px;
 }
 
@@ -98,6 +100,45 @@
   background: #075e79;
 }
 
+.content-page__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 48px;
+  padding-bottom: 120px;
+}
+
+.content-page__pagination button {
+  padding: 12px 22px;
+  border: 1px solid #075e79;
+  border-radius: 9px;
+  background: #fff;
+  color: #075e79;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.content-page__pagination button:hover:not(:disabled) {
+  background: #075e79;
+  color: #fff;
+}
+
+.content-page__pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.content-page__pagination span {
+  color: #001c32;
+  font-size: 16px;
+}
+
 @media (max-width: 950px) {
   .content-page__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -121,5 +162,15 @@
 
   .content-page__empty {
     padding: 25px 18px;
+  }
+
+  .content-page__pagination {
+    gap: 12px;
+    padding-bottom: 80px;
+  }
+
+  .content-page__pagination button {
+    padding: 10px 14px;
+    font-size: 17px;
   }
 }

@@ -5,41 +5,41 @@ import VideoCard from '../../components/VideoCard/VideoCard.jsx';
 import TractCard from '../../components/TractCard/TractCard.jsx';
 import './ContentPage.css';
 
+const VIDEOS_PER_PAGE = 9;
+
 const VIDEOS = [
   {
     id: 'video-1',
     youtubeId: 'ou2Hz8h-Jog',
-    title: 'Vidéo VIGI – 1',
-    source: 'YouTube',
+    title: 'Boucliers anti-vidéos : les nouveaux équipements de la police',
     date: '',
   },
   {
     id: 'video-2',
     youtubeId: 's6VHSStr-yY',
-    title: 'Vidéo VIGI – 2',
-    source: 'YouTube',
+    title: '« La France a tué mon mari » : témoignage et polémique',
     date: '',
   },
   {
     id: 'video-3',
     youtubeId: 'H-ZxNdt1GqY',
-    title: 'Vidéo VIGI – 3',
-    source: 'YouTube',
+    title: 'Policiers et Gilets jaunes : vers une union sacrée ?',
     date: '',
   },
 ];
 
 export default function ContentPage({ type, title }) {
+  const isVideo = type === 'video';
+
   const { items, loading, error } = useContent(
-    type === 'video' ? null : type
+    isVideo ? null : type
   );
 
   const [search, setSearch] = useState('');
   const [year, setYear] = useState('all');
+  const [page, setPage] = useState(1);
 
-  const isVideo = type === 'video';
   const sourceItems = isVideo ? VIDEOS : items || [];
-
   const normalizedSearch = search.trim().toLocaleLowerCase('fr');
 
   const years = isVideo
@@ -70,6 +70,37 @@ export default function ContentPage({ type, title }) {
     return matchesSearch && matchesYear;
   });
 
+  const totalPages = isVideo
+    ? Math.max(1, Math.ceil(filtered.length / VIDEOS_PER_PAGE))
+    : 1;
+
+  const currentPage = Math.min(page, totalPages);
+
+  const displayedItems = isVideo
+    ? filtered.slice(
+        (currentPage - 1) * VIDEOS_PER_PAGE,
+        currentPage * VIDEOS_PER_PAGE
+      )
+    : filtered;
+
+  function changeSearch(value) {
+    setSearch(value);
+    setPage(1);
+  }
+
+  function changeYear(value) {
+    setYear(value);
+    setPage(1);
+  }
+
+  function changePage(nextPage) {
+    setPage(nextPage);
+    document.querySelector('.content-page__controls')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  }
+
   return (
     <main className="container content-page">
       <div className="page-intro">
@@ -92,25 +123,22 @@ export default function ContentPage({ type, title }) {
             type="search"
             placeholder="Rechercher par titre"
             value={search}
-            onChange={(event) => setSearch(event.target.value)}
+            onChange={(event) => changeSearch(event.target.value)}
           />
         </label>
 
-        {isVideo && (
+        {isVideo && years.length > 0 && (
           <label className="field content-page__year">
             Filtrer par année
 
             <select
               value={year}
-              onChange={(event) => setYear(event.target.value)}
+              onChange={(event) => changeYear(event.target.value)}
             >
               <option value="all">Toutes</option>
 
               {years.map((availableYear) => (
-                <option
-                  key={availableYear}
-                  value={availableYear}
-                >
+                <option key={availableYear} value={availableYear}>
                   {availableYear}
                 </option>
               ))}
@@ -119,26 +147,17 @@ export default function ContentPage({ type, title }) {
         )}
       </div>
 
-      {!isVideo && loading && (
-        <p>Chargement…</p>
-      )}
+      {!isVideo && loading && <p>Chargement…</p>}
 
-      {!isVideo && error && (
-        <p role="alert">{error}</p>
-      )}
+      {!isVideo && error && <p role="alert">{error}</p>}
 
       {(isVideo || (!loading && !error)) &&
         filtered.length === 0 && (
-          <div
-            className="content-page__empty"
-            role="status"
-          >
+          <div className="content-page__empty" role="status">
             <h2>
               {normalizedSearch
                 ? 'Aucun résultat trouvé'
-                : isVideo
-                  ? 'Aucune vidéo disponible'
-                  : 'Aucune publication disponible'}
+                : 'Aucune publication disponible'}
             </h2>
 
             <p>
@@ -154,6 +173,7 @@ export default function ContentPage({ type, title }) {
                 onClick={() => {
                   setSearch('');
                   setYear('all');
+                  setPage(1);
                 }}
               >
                 Effacer les filtres
@@ -164,22 +184,13 @@ export default function ContentPage({ type, title }) {
 
       <div className="content-page__grid">
         {(isVideo || (!loading && !error)) &&
-          filtered.map((item) =>
+          displayedItems.map((item) =>
             isVideo ? (
-              <VideoCard
-                key={item.id}
-                item={item}
-              />
+              <VideoCard key={item.id} item={item} />
             ) : type === 'tract' ? (
-              <TractCard
-                key={item.id}
-                item={item}
-              />
+              <TractCard key={item.id} item={item} />
             ) : (
-              <article
-                className="content-page__article"
-                key={item.id}
-              >
+              <article className="content-page__article" key={item.id}>
                 <h2>{item.title}</h2>
                 <p>{item.summary}</p>
 
@@ -196,6 +207,30 @@ export default function ContentPage({ type, title }) {
             )
           )}
       </div>
+
+      {isVideo && filtered.length > 0 && (
+        <nav className="content-page__pagination" aria-label="Pagination des vidéos">
+          <button
+            type="button"
+            disabled={currentPage === 1}
+            onClick={() => changePage(currentPage - 1)}
+          >
+            Précédent
+          </button>
+
+          <span>
+            Page {currentPage} / {totalPages}
+          </span>
+
+          <button
+            type="button"
+            disabled={currentPage === totalPages}
+            onClick={() => changePage(currentPage + 1)}
+          >
+            Suivant
+          </button>
+        </nav>
+      )}
     </main>
   );
 }
