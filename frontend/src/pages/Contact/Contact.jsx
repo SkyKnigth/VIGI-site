@@ -26,10 +26,10 @@ export default function Contact() {
   const [status, setStatus] = useState('');
   const [busy, setBusy] = useState(false);
 
-  // Identifiants EmailJS configurés sur GitHub
-  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID?.trim();
+  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID?.trim();
+  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY?.trim();
+
 
   // Diagnostic temporaire du Service ID
   const serviceDiagnostic = serviceId
