@@ -285,11 +285,6 @@ export default function Contact() {
           </section>
         </div>
       </main>
-
-      <div
-        className="contact-footer-gap"
-        aria-hidden="true"
-      />
     </>
   );
 }
