@@ -1,9 +1,10 @@
 .contact-page {
-  padding-bottom: 120px;
+  padding-bottom: 0;
 }
 
 .contact-layout {
   display: block;
+  padding-bottom: 120px;
 }
 
 .contact-unified-panel {
@@ -144,7 +145,7 @@
 }
 
 @media (max-width: 580px) {
-  .contact-page {
+  .contact-layout {
     padding-bottom: 80px;
   }
 
