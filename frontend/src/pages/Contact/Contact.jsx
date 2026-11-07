@@ -26,32 +26,40 @@ export default function Contact() {
   const [status, setStatus] = useState('');
   const [busy, setBusy] = useState(false);
 
-  const update = (field, value) => {
+  // Identifiants EmailJS configurés sur GitHub
+  const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+  const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+  const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+  // Diagnostic temporaire du Service ID
+  const serviceDiagnostic = serviceId
+    ? JSON.stringify(serviceId)
+    : 'NON DÉFINI';
+
+  function update(field, value) {
     setForm((previous) => ({
       ...previous,
       [field]: value,
     }));
-  };
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
     setStatus('');
+
+    if (busy) return;
+
     setBusy(true);
 
-    const serviceId = 'service_g5kfoot';
-    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-    // Vérification des identifiants EmailJS
     if (!serviceId || !templateId || !publicKey) {
       setStatus(
-        "Erreur : les identifiants EmailJS ne sont pas configurés."
+        'Erreur : un ou plusieurs identifiants EmailJS sont absents.'
       );
       setBusy(false);
       return;
     }
 
-    // Préparation des données envoyées à EmailJS
+    // Préparation des données du formulaire
     const templateParams = {
       subject:
         form.subject === 'Autre'
@@ -64,23 +72,24 @@ export default function Contact() {
     };
 
     try {
-      // Envoi du message avec EmailJS
-      await emailjs.send(
+      // Envoi direct des données à EmailJS
+      const response = await emailjs.send(
         serviceId,
         templateId,
         templateParams,
-        {
-          publicKey,
-        }
+        { publicKey }
       );
 
-      // Confirmation après un envoi réussi
-      setStatus('Votre message a bien été envoyé à VIGI.');
-      setForm(initialForm);
+      if (response.status === 200) {
+        setStatus('Votre message a bien été envoyé à VIGI.');
+        setForm(initialForm);
+      } else {
+        setStatus(
+          `Réponse EmailJS : ${response.status} - ${response.text}`
+        );
+      }
     } catch (error) {
-      // Affichage de l'erreur réelle retournée par EmailJS
-      console.error('Erreur EmailJS :', error);
-
+      // Affichage de l'erreur sans ouvrir la console
       const errorCode = error?.status ?? 'inconnu';
       const errorMessage =
         error?.text ||
@@ -131,10 +140,7 @@ export default function Contact() {
                 Les champs marqués d'un * sont obligatoires.
               </p>
 
-              <label
-                className="field"
-                htmlFor="contact-subject"
-              >
+              <label className="field" htmlFor="contact-subject">
                 Sujet *
               </label>
 
@@ -151,10 +157,7 @@ export default function Contact() {
                 </option>
 
                 {SUBJECTS.map((subject) => (
-                  <option
-                    key={subject}
-                    value={subject}
-                  >
+                  <option key={subject} value={subject}>
                     {subject}
                   </option>
                 ))}
@@ -162,10 +165,7 @@ export default function Contact() {
 
               {form.subject === 'Autre' && (
                 <div className="contact-form__other">
-                  <label
-                    className="field"
-                    htmlFor="contact-other"
-                  >
+                  <label className="field" htmlFor="contact-other">
                     Précisez votre sujet *
                   </label>
 
@@ -183,10 +183,7 @@ export default function Contact() {
 
               <div className="contact-form__names">
                 <div>
-                  <label
-                    className="field"
-                    htmlFor="contact-firstname"
-                  >
+                  <label className="field" htmlFor="contact-firstname">
                     Prénom *
                   </label>
 
@@ -203,10 +200,7 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label
-                    className="field"
-                    htmlFor="contact-lastname"
-                  >
+                  <label className="field" htmlFor="contact-lastname">
                     Nom *
                   </label>
 
@@ -223,10 +217,7 @@ export default function Contact() {
                 </div>
               </div>
 
-              <label
-                className="field"
-                htmlFor="contact-email"
-              >
+              <label className="field" htmlFor="contact-email">
                 Adresse e-mail *
               </label>
 
@@ -243,10 +234,7 @@ export default function Contact() {
                 }
               />
 
-              <label
-                className="field"
-                htmlFor="contact-message"
-              >
+              <label className="field" htmlFor="contact-message">
                 Message *
               </label>
 
@@ -280,6 +268,11 @@ export default function Contact() {
                   {status}
                 </p>
               )}
+
+              {/* Diagnostic temporaire : à supprimer après correction */}
+              <p className="muted">
+                Diagnostic EmailJS — Service ID : {serviceDiagnostic}
+              </p>
 
               <p className="muted contact-form__disclaimer">
                 Les informations transmises sont utilisées
