@@ -1,8 +1,9 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ShieldCheck, UsersRound, Scale, ArrowRight } from 'lucide-react';
 import './Presentation.css';
+
+const base = import.meta.env.BASE_URL;
 
 const history = [
   {
@@ -67,6 +68,57 @@ const values = [
     icon: UsersRound,
     title: 'Rassembler',
     text: 'Faire travailler ensemble les personnels de tous corps, grades et services, plutôt que les opposer.',
+  },
+];
+
+const events = [
+  {
+    id: 'congres',
+    label: 'CONGRÈS 2026',
+    title: 'CONGRÈS VIGI 2026',
+    text: 'Le congrès VIGI 2026 a été coorganisé avec nos alliés de la FA-MI Force et Honneur, dans la perspective des élections professionnelles de décembre 2026. Ce rassemblement témoigne de notre volonté commune de défendre les droits et les intérêts des personnels du ministère de l’Intérieur.',
+    images: [
+      {
+        src: `${base}images/evenements/congres-vigi-1.jpg`,
+        alt: 'Congrès VIGI 2026, première photographie',
+      },
+      {
+        src: `${base}images/evenements/congres-vigi-2.jpg`,
+        alt: 'Congrès VIGI 2026, deuxième photographie',
+      },
+    ],
+  },
+  {
+    id: 'eupol',
+    label: 'ENGAGEMENT EUROPÉEN',
+    title: 'VIGI À L’ÉCHELLE EUROPÉENNE',
+    text: 'Sous l’impulsion de son secrétaire général, Jérôme Gigou, VIGI renforce sa présence à l’échelle européenne en rejoignant EU.Pol, la Fédération européenne des syndicats de police. Cette adhésion permet de développer les échanges avec d’autres organisations européennes et de porter les préoccupations des personnels au-delà des frontières françaises.',
+    images: [
+      {
+        src: `${base}images/evenements/eupol-vigi-1.jpg`,
+        alt: 'Rencontre européenne de VIGI, première photographie',
+      },
+      {
+        src: `${base}images/evenements/eupol-vigi-2.jpg`,
+        alt: 'Rencontre européenne de VIGI, deuxième photographie',
+      },
+    ],
+  },
+  {
+    id: 'hommage',
+    label: 'HOMMAGE',
+    title: 'HOMMAGE À UN COLLÈGUE DISPARU TROP TÔT',
+    text: 'VIGI a tenu à rendre hommage à un collègue disparu prématurément. À travers sa présence et le dépôt d’une gerbe de fleurs, le syndicat a souhaité honorer sa mémoire et témoigner de sa solidarité envers ses proches. Un moment de recueillement et de respect, pour ne pas oublier celles et ceux qui nous ont quittés trop tôt.',
+    images: [
+      {
+        src: `${base}images/evenements/hommage-vigi-1.jpg`,
+        alt: 'Hommage rendu par VIGI à un collègue disparu, première photographie',
+      },
+      {
+        src: `${base}images/evenements/hommage-vigi-2.jpg`,
+        alt: 'Hommage rendu par VIGI à un collègue disparu, deuxième photographie',
+      },
+    ],
   },
 ];
 
@@ -135,7 +187,7 @@ export default function Presentation() {
         <aside className="presentation-secretary">
           <div className="presentation-avatar">
             <img
-              src={`${import.meta.env.BASE_URL}images/jerome-gigou.png`}
+              src={`${base}images/jerome-gigou.png`}
               alt="Portrait de Jérôme Gigou"
               className="presentation-secretary-photo"
             />
@@ -189,6 +241,48 @@ export default function Presentation() {
               <h3>{history[active].title}</h3>
               <p>{history[active].text}</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="presentation-section presentation-events">
+        <div className="presentation-inner">
+          <span className="presentation-tag">NOS ÉVÉNEMENTS</span>
+
+          <h2>
+            NOS ACTIONS <span>EN IMAGES</span>
+          </h2>
+
+          <p className="presentation-section-intro">
+            Des rencontres, des engagements et des moments de solidarité
+            qui témoignent de la présence de VIGI auprès des personnels.
+          </p>
+
+          <div className="presentation-events-list">
+            {events.map((event) => (
+              <article className="presentation-event" key={event.id}>
+                <div className="presentation-event__heading">
+                  <span className="presentation-event__label">
+                    {event.label}
+                  </span>
+
+                  <h3>{event.title}</h3>
+                  <p>{event.text}</p>
+                </div>
+
+                <div className="presentation-event__gallery">
+                  {event.images.map((photo) => (
+                    <figure key={photo.src}>
+                      <img
+                        src={photo.src}
+                        alt={photo.alt}
+                        loading="lazy"
+                      />
+                    </figure>
+                  ))}
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
