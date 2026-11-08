@@ -15,14 +15,21 @@ export default function VideoCard({ item }) {
     ? `https://www.dailymotion.com/thumbnail/video/${item.dailymotionId}`
     : `https://img.youtube.com/vi/${item.youtubeId}/hqdefault.jpg`;
 
-  const embedUrl = isDailymotion
-    ? `https://www.dailymotion.com/embed/video/${item.dailymotionId}?autoplay=1`
-    : `https://www.youtube-nocookie.com/embed/${item.youtubeId}?autoplay=1`;
+  const embedUrl = `https://www.youtube-nocookie.com/embed/${item.youtubeId}?autoplay=1`;
+
+  const handlePlay = () => {
+    if (isDailymotion) {
+      window.open(videoUrl, '_blank', 'noopener,noreferrer');
+      return;
+    }
+
+    setPlaying(true);
+  };
 
   return (
     <article className="video-card">
       <div className="video-card__media">
-        {playing ? (
+        {playing && !isDailymotion ? (
           <iframe
             title={item.title}
             src={embedUrl}
@@ -48,7 +55,7 @@ export default function VideoCard({ item }) {
             <button
               type="button"
               className="video-card__trigger"
-              onClick={() => setPlaying(true)}
+              onClick={handlePlay}
               aria-label={`Lire la vidéo : ${item.title}`}
             >
               <span className="video-card__play">▶</span>
