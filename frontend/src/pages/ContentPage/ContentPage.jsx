@@ -92,6 +92,62 @@ const TRACTS = [
     summary: 'VIGI demande la titularisation d’un agent contractuel après une affectation contestée et défend la reconnaissance de son engagement professionnel.',
     published_at: '',
     external_url: `${base}raoul-vigi-wanted.pdf`,
+  },
+  {
+    id: 'policiers-premiere-ligne-europe',
+    title: 'L’Europe reconnaît les policiers en première ligne',
+    summary: 'VIGI défend la reconnaissance des risques professionnels, des violences subies et des besoins en équipements des policiers.',
+    published_at: '',
+    external_url: `${base}policiers-premiere-ligne-europe.pdf`,
+  },
+  {
+    id: 'devenir-delegue-syndical',
+    title: 'Devenir délégué syndical VIGI',
+    summary: 'Un appel à l’engagement pour défendre les collègues, leurs droits et leurs conditions de travail.',
+    published_at: '',
+    external_url: `${base}devenir-delegue-syndical.pdf`,
+  },
+  {
+    id: 'vigi-reprenons-la-parole',
+    title: 'VIGI : reprenons la parole',
+    summary: 'Moins de bureaucratie, davantage de présence sur le terrain et une meilleure défense des personnels.',
+    published_at: '',
+    external_url: `${base}vigi-reprenons-la-parole.pdf`,
+  },
+  {
+    id: 'vigi-combats-a-nos-cotes',
+    title: 'VIGI : combats à nos côtés',
+    summary: 'Une invitation à rejoindre VIGI et à s’engager dans la représentation syndicale.',
+    published_at: '',
+    external_url: `${base}vigi-combats-a-nos-cotes.pdf`,
+  },
+  {
+    id: 'independance-syndicale',
+    title: 'VIGI défend son indépendance syndicale',
+    summary: 'Le syndicat affirme son indépendance et critique le fonctionnement des organisations syndicales majoritaires.',
+    published_at: '',
+    external_url: `${base}independance-syndicale.pdf`,
+  },
+  {
+    id: 'choose-france-rations',
+    title: 'Choose France 2026 : VIGI dénonce les rations périmées',
+    summary: 'VIGI dénonce la distribution présumée de rations périmées aux policiers mobilisés pour la sécurité du sommet.',
+    published_at: '',
+    external_url: `${base}choose-france-rations.pdf`,
+  },
+  {
+    id: 'debut-carriere-smic',
+    title: 'Débuts de carrière : le SMIC rattrape la Police nationale',
+    summary: 'VIGI demande une revalorisation des débuts de carrière et une progression salariale plus cohérente.',
+    published_at: '',
+    external_url: `${base}debut-carriere-smic.pdf`,
+  },
+  {
+    id: 'mobilisation-30-juin-bercy',
+    title: 'Mobilisation du 30 juin devant Bercy',
+    summary: 'VIGI appelle les personnels à se mobiliser pour leurs conditions de travail, leurs missions et leur reconnaissance.',
+    published_at: '',
+    external_url: `${base}mobilisation-30-juin-bercy.pdf`,
   }
 ];
 
