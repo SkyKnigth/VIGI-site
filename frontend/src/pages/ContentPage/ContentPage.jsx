@@ -1,5 +1,5 @@
-
 import { useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useContent } from '../../hooks/useContent.js';
 import VideoCard from '../../components/VideoCard/VideoCard.jsx';
 import TractCard from '../../components/TractCard/TractCard.jsx';
@@ -27,32 +27,77 @@ const VIDEOS = [
     date: '',
   },
   {
-  id: 'video-4',
-  youtubeId: 'fvEl8kxJKGs',
-  title: 'La Matinale 26/10 : Acte II : les manifestations (interdites) vu de l’intérieur !',
-  date: '',
+    id: 'video-4',
+    youtubeId: 'fvEl8kxJKGs',
+    title: 'La Matinale 26/10 : Acte II : les manifestations (interdites) vu de l’intérieur !',
+    date: '',
   },
   {
-  id: 'video-5',
-  platform: 'dailymotion',
-  dailymotionId: 'xbk1fcq',
-  title: 'Pourquoi je quitte la Police : le secrétaire général du syndicat Vigi Police explique son choix',
-  date: '',
+    id: 'video-5',
+    platform: 'dailymotion',
+    dailymotionId: 'xbk1fcq',
+    title: 'Pourquoi je quitte la Police : le secrétaire général du syndicat Vigi Police explique son choix',
+    date: '',
+  },
+];
+
+const base = `${import.meta.env.BASE_URL}tracts/`;
+
+const TRACTS = [
+  {
+    id: 'malaise-services',
+    title: 'VIGI dénonce un profond malaise dans les services',
+    summary: 'VIGI alerte sur le manque d’effectifs, la charge de travail et les difficultés de management.',
+    published_at: '',
+    external_url: `${base}malaise-services.pdf`,
+  },
+  {
+    id: 'marche-31-janvier',
+    title: 'VIGI ne marchera pas aux côtés d’Alliance le 31 janvier',
+    summary: 'Position du syndicat sur la mobilisation du 31 janvier 2026 et sur le pluralisme syndical.',
+    published_at: '',
+    external_url: `${base}marche-31-janvier.pdf`,
+  },
+  {
+    id: 'civils-gendarmerie',
+    title: 'VIGI s’ouvre aux personnels civils de la Gendarmerie',
+    summary: 'Présentation de l’ouverture de VIGI aux personnels civils de la Gendarmerie.',
+    published_at: '',
+    external_url: `${base}civils-gendarmerie.pdf`,
+  },
+  {
+    id: 'agents-prefectures',
+    title: 'VIGI s’ouvre aux agents des préfectures',
+    summary: 'Présentation de l’ouverture du syndicat aux agents administratifs, techniques et scientifiques des préfectures.',
+    published_at: '',
+    external_url: `${base}agents-prefectures.pdf`,
   },
 ];
 
 export default function ContentPage({ type, title }) {
   const isVideo = type === 'video';
+  const isTract = type === 'tract';
 
   const { items, loading, error } = useContent(
-    isVideo ? null : type
+    isVideo || isTract ? null : type
   );
+
+  const [params] = useSearchParams();
+
+  const selectedTract = isTract
+    ? TRACTS.find((item) => item.id === params.get('tract'))
+    : null;
 
   const [search, setSearch] = useState('');
   const [year, setYear] = useState('all');
   const [page, setPage] = useState(1);
 
-  const sourceItems = isVideo ? VIDEOS : items || [];
+  const sourceItems = isVideo
+    ? VIDEOS
+    : isTract
+      ? TRACTS
+      : items || [];
+
   const normalizedSearch = search.trim().toLocaleLowerCase('fr');
 
   const years = isVideo
@@ -108,10 +153,52 @@ export default function ContentPage({ type, title }) {
 
   function changePage(nextPage) {
     setPage(nextPage);
+
     document.querySelector('.content-page__controls')?.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
     });
+  }
+
+  if (selectedTract) {
+    return (
+      <main className="container content-page">
+        <Link to="?" className="tract-detail__back">
+          ← Retour aux tracts
+        </Link>
+
+        <div className="tract-detail">
+          <div className="tract-detail__visual">
+            <iframe
+              src={`${selectedTract.external_url}#toolbar=0&navpanes=0&view=FitH`}
+              title={`Document PDF : ${selectedTract.title}`}
+              className="tract-detail__pdf"
+            />
+
+            <a
+              className="tract-detail__download"
+              href={selectedTract.external_url}
+              download
+            >
+              Télécharger le PDF
+            </a>
+          </div>
+
+          <div className="tract-detail__text">
+            <h1>{selectedTract.title}</h1>
+            <p>{selectedTract.summary}</p>
+
+            <a
+              href={selectedTract.external_url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Consulter le PDF complet
+            </a>
+          </div>
+        </div>
+      </main>
+    );
   }
 
   return (
@@ -151,7 +238,10 @@ export default function ContentPage({ type, title }) {
               <option value="all">Toutes</option>
 
               {years.map((availableYear) => (
-                <option key={availableYear} value={availableYear}>
+                <option
+                  key={availableYear}
+                  value={availableYear}
+                >
                   {availableYear}
                 </option>
               ))}
@@ -160,13 +250,20 @@ export default function ContentPage({ type, title }) {
         )}
       </div>
 
-      {!isVideo && loading && <p>Chargement…</p>}
+      {!isVideo && !isTract && loading && (
+        <p>Chargement…</p>
+      )}
 
-      {!isVideo && error && <p role="alert">{error}</p>}
+      {!isVideo && !isTract && error && (
+        <p role="alert">{error}</p>
+      )}
 
-      {(isVideo || (!loading && !error)) &&
+      {(isVideo || isTract || (!loading && !error)) &&
         filtered.length === 0 && (
-          <div className="content-page__empty" role="status">
+          <div
+            className="content-page__empty"
+            role="status"
+          >
             <h2>
               {normalizedSearch
                 ? 'Aucun résultat trouvé'
@@ -175,7 +272,7 @@ export default function ContentPage({ type, title }) {
 
             <p>
               {normalizedSearch
-                ? `Aucune vidéo ou publication ne correspond à « ${search.trim()} ». Essayez un autre mot-clé.`
+                ? `Aucune publication ne correspond à « ${search.trim()} ». Essayez un autre mot-clé.`
                 : 'Aucun contenu ne correspond aux filtres sélectionnés.'}
             </p>
 
@@ -196,14 +293,23 @@ export default function ContentPage({ type, title }) {
         )}
 
       <div className="content-page__grid">
-        {(isVideo || (!loading && !error)) &&
+        {(isVideo || isTract || (!loading && !error)) &&
           displayedItems.map((item) =>
             isVideo ? (
-              <VideoCard key={item.id} item={item} />
-            ) : type === 'tract' ? (
-              <TractCard key={item.id} item={item} />
+              <VideoCard
+                key={item.id}
+                item={item}
+              />
+            ) : isTract ? (
+              <TractCard
+                key={item.id}
+                item={item}
+              />
             ) : (
-              <article className="content-page__article" key={item.id}>
+              <article
+                className="content-page__article"
+                key={item.id}
+              >
                 <h2>{item.title}</h2>
                 <p>{item.summary}</p>
 
@@ -222,7 +328,10 @@ export default function ContentPage({ type, title }) {
       </div>
 
       {isVideo && filtered.length > 0 && (
-        <nav className="content-page__pagination" aria-label="Pagination des vidéos">
+        <nav
+          className="content-page__pagination"
+          aria-label="Pagination des vidéos"
+        >
           <button
             type="button"
             disabled={currentPage === 1}
