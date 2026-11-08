@@ -72,6 +72,27 @@ const TRACTS = [
     published_at: '',
     external_url: `${base}agents-prefectures.pdf`,
   },
+  {
+  id: 'trois-membres-bureau',
+  title: 'VIGI dénonce des mesures visant trois membres du bureau national',
+  summary: 'Le syndicat dénonce les mesures administratives et judiciaires concernant trois membres de son bureau national.',
+  published_at: '',
+  external_url: `${base}3-morts.pdf`,
+  },
+  {
+    id: 'promotion-mayotte',
+    title: 'Promotion controversée d’un major à Mayotte',
+    summary: 'VIGI conteste une promotion au commissariat de Mamoudzou et dénonce le favoritisme dans les avancements.',
+    published_at: '',
+    external_url: `${base}POLICE-promo-copinage-a-Mayotte.pdf`,
+  },
+  {
+    id: 'titularisation-gendarmerie',
+    title: 'VIGI demande la titularisation d’un agent de la Gendarmerie',
+    summary: 'VIGI demande la titularisation d’un agent contractuel après une affectation contestée et défend la reconnaissance de son engagement professionnel.',
+    published_at: '',
+    external_url: `${base}raoul-vigi-wanted.pdf`,
+  }
 ];
 
 export default function ContentPage({ type, title }) {
