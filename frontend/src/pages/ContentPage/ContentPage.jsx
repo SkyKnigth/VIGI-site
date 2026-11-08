@@ -146,6 +146,55 @@ const TRACTS = [
     published_at: '2026-06-22',
     external_url: `${base}mobilisation-30-juin-bercy.pdf`,
   },
+  {
+    id: 'elections-professionnelles-2026',
+    title: 'Élections professionnelles 2026 : ensemble, plus forts, plus efficaces',
+    summary: 'VIGI et Force & Honneur présentent leur liste commune pour les élections professionnelles de décembre 2026.',
+    published_at: '',
+    external_url: `${base}elections-professionnelles-2026.pdf`
+  },
+  {
+    id: 'lopmi-regularisation-droits',
+    title: 'LOPMI : régularisation des droits des agents',
+    summary: 'VIGI et Force & Honneur demandent la régularisation des situations administratives et financières des collègues lésés.',
+    published_at: '',
+    external_url: `${base}lopmi-regularisation-droits.pdf`
+  },
+  {
+    id: 'lopmi-constat-inversions-carriere',
+    title: 'LOPMI : constat sur les inversions de carrière',
+    summary: 'Un constat des incohérences indiciaires, des inversions de carrière et des difficultés de recours.',
+    published_at: '',
+    external_url: `${base}lopmi-constat-inversions-carriere.pdf`
+  },
+  {
+    id: 'lopmi-constat-propositions',
+    title: 'LOPMI : constat et propositions',
+    summary: 'VIGI présente les difficultés liées à la LOPMI et ses revendications pour les élections professionnelles 2026.',
+    published_at: '',
+    external_url: `${base}lopmi-constat-propositions.pdf`
+  },
+  {
+    id: 'cahier-revendicatif-nuiteux',
+    title: 'Cahier revendicatif des agents de nuit',
+    summary: 'Présentation du cahier revendicatif pour les personnels travaillant de nuit.',
+    published_at: '',
+    external_url: `${base}cahier-revendicatif-nuiteux.pdf`
+  },
+  {
+    id: 'revendications-travail-de-nuit',
+    title: 'Travail de nuit : les revendications de VIGI',
+    summary: 'Bonification, équipements adaptés, formations, santé, retraite et renforcement des effectifs de nuit.',
+    published_at: '',
+    external_url: `${base}revendications-travail-de-nuit.pdf`
+  },
+  {
+    id: 'violences-urbaines-manifester-droit',
+    title: 'Violences urbaines : manifester est un droit',
+    summary: 'VIGI défend la liberté de manifester pacifiquement et demande une meilleure protection des personnels face aux violences.',
+    published_at: '',
+    external_url: `${base}violences-urbaines-manifester-droit.pdf`
+  }
 ];
 
 const sortedTracts = TRACTS
