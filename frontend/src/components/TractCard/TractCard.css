@@ -73,3 +73,29 @@
   font-size: 13px;
   color: #687783;
 }
+
+
+.tract-card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tract-card__link {
+  display: block;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.tract-card__content {
+  padding: 18px 20px 22px;
+}
+
+.tract-card__content h3 {
+  margin: 0 0 14px;
+}
+
+.tract-card__content time {
+  display: block;
+  margin: 0;
+}

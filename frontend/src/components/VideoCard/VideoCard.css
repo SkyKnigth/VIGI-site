@@ -113,6 +113,16 @@
   font-size: 13px;
 }
 
+.video-card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.video-card__content {
+  padding: 18px 20px 22px;
+}
+
+
 @media (prefers-reduced-motion: reduce) {
   .video-card,
   .video-card__play,
