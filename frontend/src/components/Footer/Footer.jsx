@@ -1,14 +1,14 @@
-
 import { Link } from 'react-router-dom';
-import { Instagram, Facebook, Youtube } from 'lucide-react';
+import { Instagram, Facebook } from 'lucide-react';
 import { socials } from '../../data/socials.js';
 import './Footer.css';
 import XLogo from '../XLogo/XLogo.jsx';
+import TikTokLogo from '../TikTokLogo/TikTokLogo.jsx';
 
 const socialIcons = {
   instagram: Instagram,
   facebook: Facebook,
-  youtube: Youtube,
+  tiktok: TikTokLogo,
 };
 
 export default function Footer() {
