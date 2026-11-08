@@ -32,6 +32,13 @@ const VIDEOS = [
   title: 'La Matinale 26/10 : Acte II : les manifestations (interdites) vu de l’intérieur !',
   date: '',
   },
+  {
+  id: 'video-5',
+  platform: 'dailymotion',
+  dailymotionId: 'xbk1fcq',
+  title: 'Pourquoi je quitte la Police : le secrétaire général du syndicat Vigi Police explique son choix',
+  date: '',
+  },
 ];
 
 export default function ContentPage({ type, title }) {

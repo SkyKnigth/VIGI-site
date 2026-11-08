@@ -5,8 +5,19 @@ export default function VideoCard({ item }) {
   const [playing, setPlaying] = useState(false);
   const [imageFailed, setImageFailed] = useState(false);
 
-  const videoUrl = `https://www.youtube.com/watch?v=${item.youtubeId}`;
-  const thumbnail = `https://img.youtube.com/vi/${item.youtubeId}/hqdefault.jpg`;
+  const isDailymotion = item.platform === 'dailymotion';
+
+  const videoUrl = isDailymotion
+    ? `https://www.dailymotion.com/video/${item.dailymotionId}`
+    : `https://www.youtube.com/watch?v=${item.youtubeId}`;
+
+  const thumbnail = isDailymotion
+    ? `https://www.dailymotion.com/thumbnail/video/${item.dailymotionId}`
+    : `https://img.youtube.com/vi/${item.youtubeId}/hqdefault.jpg`;
+
+  const embedUrl = isDailymotion
+    ? `https://www.dailymotion.com/embed/video/${item.dailymotionId}?autoplay=1`
+    : `https://www.youtube-nocookie.com/embed/${item.youtubeId}?autoplay=1`;
 
   return (
     <article className="video-card">
@@ -14,7 +25,7 @@ export default function VideoCard({ item }) {
         {playing ? (
           <iframe
             title={item.title}
-            src={`https://www.youtube-nocookie.com/embed/${item.youtubeId}?autoplay=1`}
+            src={embedUrl}
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
             allowFullScreen
