@@ -26,6 +26,12 @@ const VIDEOS = [
     title: 'Policiers et Gilets jaunes : vers une union sacrée ?',
     date: '',
   },
+  {
+  id: 'video-4',
+  youtubeId: 'fvEl8kxJKGs',
+  title: 'La Matinale 26/10 : Acte II : les manifestations (interdites) vu de l’intérieur !',
+  date: '',
+  },
 ];
 
 export default function ContentPage({ type, title }) {
