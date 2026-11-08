@@ -1,11 +1,10 @@
-import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { useContent } from '../../hooks/useContent.js';
-import VideoCard from '../../components/VideoCard/VideoCard.jsx';
 import TractCard from '../../components/TractCard/TractCard.jsx';
+import VideoCard from '../../components/VideoCard/VideoCard.jsx';
 import './ContentPage.css';
 
-const VIDEOS_PER_PAGE = 9;
+const base = `${import.meta.env.BASE_URL}tracts/`;
 
 const VIDEOS = [
   {
@@ -41,8 +40,6 @@ const VIDEOS = [
   },
 ];
 
-const base = `${import.meta.env.BASE_URL}tracts/`;
-
 const TRACTS = [
   {
     id: 'malaise-services',
@@ -55,7 +52,7 @@ const TRACTS = [
     id: 'marche-31-janvier',
     title: 'VIGI ne marchera pas aux côtés d’Alliance le 31 janvier',
     summary: 'Position du syndicat sur la mobilisation du 31 janvier et sur le pluralisme syndical.',
-    published_at: '',
+    published_at: '2026-01-20',
     external_url: `${base}marche-31-janvier.pdf`,
   },
   {
@@ -73,11 +70,11 @@ const TRACTS = [
     external_url: `${base}agents-prefectures.pdf`,
   },
   {
-  id: 'trois-membres-bureau',
-  title: 'VIGI dénonce des mesures visant trois membres du bureau national',
-  summary: 'Le syndicat dénonce les mesures administratives et judiciaires concernant trois membres de son bureau national.',
-  published_at: '',
-  external_url: `${base}3-morts.pdf`,
+    id: 'trois-membres-bureau',
+    title: 'VIGI dénonce des mesures visant trois membres du bureau national',
+    summary: 'Le syndicat dénonce les mesures administratives et judiciaires concernant trois membres de son bureau national.',
+    published_at: '',
+    external_url: `${base}3-morts.pdf`,
   },
   {
     id: 'promotion-mayotte',
@@ -146,291 +143,141 @@ const TRACTS = [
     id: 'mobilisation-30-juin-bercy',
     title: 'Mobilisation du 30 juin devant Bercy',
     summary: 'VIGI appelle les personnels à se mobiliser pour leurs conditions de travail, leurs missions et leur reconnaissance.',
-    published_at: '',
+    published_at: '2026-06-22',
     external_url: `${base}mobilisation-30-juin-bercy.pdf`,
-  }
+  },
 ];
 
-export default function ContentPage({ type, title }) {
+const sortedTracts = TRACTS
+  .map((tract, index) => ({
+    ...tract,
+    originalIndex: index,
+  }))
+  .sort((a, b) => {
+    if (a.published_at && b.published_at) {
+      return b.published_at.localeCompare(a.published_at);
+    }
+
+    if (a.published_at) return -1;
+    if (b.published_at) return 1;
+
+    return b.originalIndex - a.originalIndex;
+  });
+
+export default function ContentPage({ type }) {
   const isVideo = type === 'video';
   const isTract = type === 'tract';
 
-  const { items, loading, error } = useContent(
+  const [params] = useSearchParams();
+
+  const { items: contentItems = [] } = useContent(
     isVideo || isTract ? null : type
   );
 
-  const [params] = useSearchParams();
+  const selectedTractId = params.get('tract');
 
   const selectedTract = isTract
-    ? TRACTS.find((item) => item.id === params.get('tract'))
+    ? TRACTS.find((item) => item.id === selectedTractId)
     : null;
 
-  const [search, setSearch] = useState('');
-  const [year, setYear] = useState('all');
-  const [page, setPage] = useState(1);
-
-  const sourceItems = isVideo
-    ? VIDEOS
-    : isTract
-      ? TRACTS
-      : items || [];
-
-  const normalizedSearch = search.trim().toLocaleLowerCase('fr');
-
-  const years = isVideo
-    ? [...new Set(
-        VIDEOS
-          .filter((video) => video.date)
-          .map((video) => video.date.slice(0, 4))
-      )].sort((a, b) => b.localeCompare(a))
-    : [];
-
-  const filtered = sourceItems.filter((item) => {
-    const searchableText = [
-      item.title,
-      item.source,
-      item.summary,
-    ]
-      .filter(Boolean)
-      .join(' ')
-      .toLocaleLowerCase('fr');
-
-    const matchesSearch = searchableText.includes(normalizedSearch);
-
-    const matchesYear =
-      !isVideo ||
-      year === 'all' ||
-      (item.date || '').startsWith(year);
-
-    return matchesSearch && matchesYear;
-  });
-
-  const totalPages = isVideo
-    ? Math.max(1, Math.ceil(filtered.length / VIDEOS_PER_PAGE))
-    : 1;
-
-  const currentPage = Math.min(page, totalPages);
-
-  const displayedItems = isVideo
-    ? filtered.slice(
-        (currentPage - 1) * VIDEOS_PER_PAGE,
-        currentPage * VIDEOS_PER_PAGE
-      )
-    : filtered;
-
-  function changeSearch(value) {
-    setSearch(value);
-    setPage(1);
-  }
-
-  function changeYear(value) {
-    setYear(value);
-    setPage(1);
-  }
-
-  function changePage(nextPage) {
-    setPage(nextPage);
-
-    document.querySelector('.content-page__controls')?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    });
-  }
-
-  if (selectedTract) {
+  if (isTract && selectedTract) {
     return (
-      <main className="container content-page content-page--tract-detail">
+      <main className="content-page container">
         <Link to="?" className="tract-detail__back">
           ← Retour à nos tracts
         </Link>
 
-        <div className="tract-detail">
-          <div className="tract-detail__visual">
+        <section className="tract-detail">
+          <div className="tract-detail__document">
             <iframe
-              src={`${selectedTract.external_url}#toolbar=0&navpanes=0&view=FitH`}
-              title={`Document PDF : ${selectedTract.title}`}
-              className="tract-detail__pdf"
+              src={`${selectedTract.external_url}#toolbar=0&navpanes=0&view=Fit`}
+              title={selectedTract.title}
             />
-
-            <a
-              className="tract-detail__download"
-              href={selectedTract.external_url}
-              download
-            >
-              Télécharger le PDF
-            </a>
           </div>
 
-          <div className="tract-detail__text">
+          <div className="tract-detail__info">
             <h1>{selectedTract.title}</h1>
+
+            {selectedTract.published_at && (
+              <p>
+                Publié le{' '}
+                {new Date(
+                  `${selectedTract.published_at}T12:00:00`
+                ).toLocaleDateString('fr-FR')}
+              </p>
+            )}
 
             <p>{selectedTract.summary}</p>
 
             <a
-              className="tract-detail__open"
               href={selectedTract.external_url}
               target="_blank"
               rel="noopener noreferrer"
+              className="tract-detail__open"
             >
               Consulter le PDF complet
             </a>
+
+            <a
+              href={selectedTract.external_url}
+              download
+              className="tract-detail__download"
+            >
+              Télécharger le PDF
+            </a>
           </div>
-        </div>
+        </section>
       </main>
     );
   }
 
+  const items = isVideo
+    ? VIDEOS
+    : isTract
+      ? sortedTracts
+      : contentItems;
+
+  const title = isVideo
+    ? 'Nos vidéos'
+    : isTract
+      ? 'Nos tracts'
+      : 'Nos publications';
+
   return (
-    <main className="container content-page">
-      <div className="page-intro">
-        <h1 className="page-title">
-          {isVideo ? 'Nos vidéos' : title}
-        </h1>
-
-        <p>
-          {isVideo
-            ? 'Retrouvez les vidéos et interventions de VIGI.'
-            : 'Retrouvez les publications officielles de VIGI.'}
-        </p>
-      </div>
-
-      <div className="content-page__controls">
-        <label className="field content-page__filter">
-          Rechercher une publication
-
-          <input
-            type="search"
-            placeholder="Rechercher par titre"
-            value={search}
-            onChange={(event) => changeSearch(event.target.value)}
-          />
-        </label>
-
-        {isVideo && years.length > 0 && (
-          <label className="field content-page__year">
-            Filtrer par année
-
-            <select
-              value={year}
-              onChange={(event) => changeYear(event.target.value)}
-            >
-              <option value="all">Toutes</option>
-
-              {years.map((availableYear) => (
-                <option
-                  key={availableYear}
-                  value={availableYear}
-                >
-                  {availableYear}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
-      </div>
-
-      {!isVideo && !isTract && loading && (
-        <p>Chargement…</p>
-      )}
-
-      {!isVideo && !isTract && error && (
-        <p role="alert">{error}</p>
-      )}
-
-      {(isVideo || isTract || (!loading && !error)) &&
-        filtered.length === 0 && (
-          <div
-            className="content-page__empty"
-            role="status"
-          >
-            <h2>
-              {normalizedSearch
-                ? 'Aucun résultat trouvé'
-                : 'Aucune publication disponible'}
-            </h2>
-
-            <p>
-              {normalizedSearch
-                ? `Aucune publication ne correspond à « ${search.trim()} ». Essayez un autre mot-clé.`
-                : 'Aucun contenu ne correspond aux filtres sélectionnés.'}
-            </p>
-
-            {(normalizedSearch || year !== 'all') && (
-              <button
-                type="button"
-                className="content-page__reset"
-                onClick={() => {
-                  setSearch('');
-                  setYear('all');
-                  setPage(1);
-                }}
-              >
-                Effacer les filtres
-              </button>
-            )}
-          </div>
-        )}
+    <main className="content-page container">
+      <h1>{title}</h1>
 
       <div className="content-page__grid">
-        {(isVideo || isTract || (!loading && !error)) &&
-          displayedItems.map((item) =>
-            isVideo ? (
+        {items.map((item) => {
+          if (isVideo) {
+            return (
               <VideoCard
                 key={item.id}
                 item={item}
               />
-            ) : isTract ? (
+            );
+          }
+
+          if (isTract) {
+            return (
               <TractCard
                 key={item.id}
                 item={item}
               />
-            ) : (
-              <article
-                className="content-page__article"
-                key={item.id}
-              >
-                <h2>{item.title}</h2>
-                <p>{item.summary}</p>
+            );
+          }
 
-                {item.external_url && (
-                  <a
-                    href={item.external_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Lire la publication
-                  </a>
-                )}
-              </article>
-            )
-          )}
+          return (
+            <TractCard
+              key={item.id}
+              item={item}
+            />
+          );
+        })}
       </div>
 
-      {isVideo && filtered.length > 0 && (
-        <nav
-          className="content-page__pagination"
-          aria-label="Pagination des vidéos"
-        >
-          <button
-            type="button"
-            disabled={currentPage === 1}
-            onClick={() => changePage(currentPage - 1)}
-          >
-            Précédent
-          </button>
-
-          <span>
-            Page {currentPage} / {totalPages}
-          </span>
-
-          <button
-            type="button"
-            disabled={currentPage === totalPages}
-            onClick={() => changePage(currentPage + 1)}
-          >
-            Suivant
-          </button>
-        </nav>
+      {items.length === 0 && (
+        <p>Aucune publication disponible pour le moment.</p>
       )}
     </main>
   );

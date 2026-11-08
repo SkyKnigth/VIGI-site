@@ -25,6 +25,25 @@
   z-index: 1;
 }
 
+
+.tract-card__preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 210 / 297;
+  overflow: hidden;
+  background: #fff;
+  pointer-events: none;
+}
+
+.tract-card__preview iframe {
+  display: block;
+  width: calc(100% + 20px);
+  height: 100%;
+  border: 0;
+  pointer-events: none;
+}
+
+
 .tract-card__preview-link:focus-visible {
   outline: 3px solid #0756e9;
   outline-offset: -3px;
