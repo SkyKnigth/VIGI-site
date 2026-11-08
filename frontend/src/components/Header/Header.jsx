@@ -26,15 +26,15 @@ export default function Header() {
           <img src={`${import.meta.env.BASE_URL}images/vigi-logo.jpg`} alt="Logo VIGI"/>
 
           <span className="site-header__brand-name">
-            VIGI
-            <small>
+            <span className="site-header__brand-title">
+              VIGI
               <img
                 src={`${import.meta.env.BASE_URL}images/logo-eupol.png`}
                 alt="EU.Pol"
                 className="site-header__eupol"
               />
-              Ministère de l’Intérieur
-            </small>
+            </span>
+            <small>Ministère de l’Intérieur</small>
           </span>
         </Link>
 

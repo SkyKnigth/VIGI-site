@@ -22,7 +22,7 @@
   align-items: center;
   gap: 5px;
   flex-shrink: 0;
-  font: 800 34px Barlow Condensed, sans-serif;
+  font: 800 34px "Barlow Condensed", sans-serif;
   color: #003747;
 }
 
@@ -38,18 +38,23 @@
   line-height: 1;
 }
 
-.site-header__brand-name small {
+.site-header__brand-title {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-top: 6px;
-  font: 600 12px Arial, sans-serif;
+  gap: 12px;
 }
 
-.site-header__brand-name .site-header__eupol {
+.site-header__brand-name small {
   display: block;
-  width: 22px;
-  height: 22px;
+  margin-top: 6px;
+  font: 600 12px Arial, sans-serif;
+  white-space: nowrap;
+}
+
+.site-header__brand-title .site-header__eupol {
+  display: block;
+  width: 34px;
+  height: 34px;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -200,6 +205,19 @@
   .site-header__brand > img {
     width: 58px;
     height: 58px;
+  }
+
+  .site-header__brand {
+    font-size: 30px;
+  }
+
+  .site-header__brand-title {
+    gap: 8px;
+  }
+
+  .site-header__brand-title .site-header__eupol {
+    width: 28px;
+    height: 28px;
   }
 
   .site-header__toggle {
