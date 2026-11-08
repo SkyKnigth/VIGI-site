@@ -23,12 +23,18 @@ export default function Header() {
           onClick={closeMenu}
           aria-label="VIGI, accueil"
         >
-          <img
-            src={`${import.meta.env.BASE_URL}images/vigi-logo.jpg`}
-            alt="Logo VIGI"
-          />
+          <img src={`${import.meta.env.BASE_URL}images/vigi-logo.jpg`} alt="Logo VIGI"/>
+
           <span className="site-header__brand-name">
-            VIGI <small>Ministère de l’Intérieur</small>
+            VIGI
+            <small>
+              <img
+                src={`${import.meta.env.BASE_URL}images/logo-eupol.png`}
+                alt="EU.Pol"
+                className="site-header__eupol"
+              />
+              Ministère de l’Intérieur
+            </small>
           </span>
         </Link>
 
