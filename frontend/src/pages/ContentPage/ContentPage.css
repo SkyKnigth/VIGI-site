@@ -133,16 +133,41 @@
   font-size: 13px;
 }
 
-.tract-detail__back {
-  display: inline-block;
-  margin-bottom: 35px;
-  color: #0756e9;
-  text-decoration: none;
-  font-weight: 600;
+.content-page--tract-detail {
+  padding-top: 55px;
+  padding-bottom: 120px;
 }
 
-.tract-detail__back:hover {
-  text-decoration: underline;
+.tract-detail__back,
+.tract-detail__open,
+.tract-detail__download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 12px 22px;
+  border: 1px solid #003747;
+  border-radius: 4px;
+  background: #003747;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.tract-detail__back:hover,
+.tract-detail__open:hover,
+.tract-detail__download:hover {
+  background: #0756e9;
+  border-color: #0756e9;
+  color: #fff;
+  text-decoration: none;
+}
+
+.tract-detail__back {
+  margin-bottom: 40px;
 }
 
 .tract-detail {
@@ -150,7 +175,6 @@
   grid-template-columns: minmax(0, 42%) minmax(0, 1fr);
   gap: 48px;
   align-items: start;
-  padding-bottom: 120px;
 }
 
 .tract-detail__visual,
@@ -169,21 +193,7 @@
 }
 
 .tract-detail__download {
-  display: block;
-  width: fit-content;
   margin: 20px auto 0;
-  padding: 13px 22px;
-  border-radius: 6px;
-  background: #0756e9;
-  color: #fff;
-  text-decoration: none;
-  font-weight: 700;
-  text-align: center;
-  transition: background 0.2s ease;
-}
-
-.tract-detail__download:hover {
-  background: #003eae;
 }
 
 .tract-detail__text h1 {
@@ -196,8 +206,13 @@
   line-height: 1.8;
 }
 
-.tract-detail__text a {
-  color: #0756e9;
+.tract-detail__open {
+  margin-top: 10px;
+}
+
+.tract-detail__text .tract-detail__open,
+.tract-detail__text .tract-detail__open:visited {
+  color: #fff;
 }
 
 .content-page__article {
@@ -316,10 +331,18 @@
     font-size: 24px;
   }
 
+  .content-page--tract-detail {
+    padding-top: 35px;
+    padding-bottom: 80px;
+  }
+
+  .tract-detail__back {
+    margin-bottom: 30px;
+  }
+
   .tract-detail {
     grid-template-columns: 1fr;
     gap: 30px;
-    padding-bottom: 60px;
   }
 
   .tract-detail__pdf {

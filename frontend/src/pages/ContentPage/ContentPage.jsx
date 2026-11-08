@@ -54,7 +54,7 @@ const TRACTS = [
   {
     id: 'marche-31-janvier',
     title: 'VIGI ne marchera pas aux côtés d’Alliance le 31 janvier',
-    summary: 'Position du syndicat sur la mobilisation du 31 janvier 2026 et sur le pluralisme syndical.',
+    summary: 'Position du syndicat sur la mobilisation du 31 janvier et sur le pluralisme syndical.',
     published_at: '',
     external_url: `${base}marche-31-janvier.pdf`,
   },
@@ -162,9 +162,9 @@ export default function ContentPage({ type, title }) {
 
   if (selectedTract) {
     return (
-      <main className="container content-page">
+      <main className="container content-page content-page--tract-detail">
         <Link to="?" className="tract-detail__back">
-          ← Retour aux tracts
+          ← Retour à nos tracts
         </Link>
 
         <div className="tract-detail">
@@ -186,9 +186,11 @@ export default function ContentPage({ type, title }) {
 
           <div className="tract-detail__text">
             <h1>{selectedTract.title}</h1>
+
             <p>{selectedTract.summary}</p>
 
             <a
+              className="tract-detail__open"
               href={selectedTract.external_url}
               target="_blank"
               rel="noopener noreferrer"
