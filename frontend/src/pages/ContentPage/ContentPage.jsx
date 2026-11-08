@@ -52,7 +52,7 @@ const TRACTS = [
     id: 'marche-31-janvier',
     title: 'VIGI ne marchera pas aux côtés d’Alliance le 31 janvier',
     summary: 'Position du syndicat sur la mobilisation du 31 janvier et sur le pluralisme syndical.',
-    published_at: '2026-01-20',
+    published_at: '',
     external_url: `${base}marche-31-janvier.pdf`,
   },
   {
@@ -143,7 +143,7 @@ const TRACTS = [
     id: 'mobilisation-30-juin-bercy',
     title: 'Mobilisation du 30 juin devant Bercy',
     summary: 'VIGI appelle les personnels à se mobiliser pour leurs conditions de travail, leurs missions et leur reconnaissance.',
-    published_at: '2026-06-22',
+    published_at: '',
     external_url: `${base}mobilisation-30-juin-bercy.pdf`,
   },
   {
@@ -294,7 +294,9 @@ export default function ContentPage({ type }) {
 
   return (
     <main className="content-page container">
-      <h1>{title}</h1>
+      <h1 className={isVideo || isTract ? 'content-page__main-title' : ''}>
+        {title}
+      </h1>
 
       <div className="content-page__grid">
         {items.map((item) => {

@@ -322,6 +322,16 @@ main.content-page.container {
   padding-bottom: 120px;
 }
 
+.content-page__main-title {
+  margin: 0 0 50px;
+  color: #102938;
+  font-family: Impact, 'Arial Narrow', sans-serif;
+  font-size: clamp(48px, 6vw, 94px);
+  font-weight: 900;
+  line-height: 1.02;
+  text-transform: uppercase;
+}
+
 @media (max-width: 1000px) {
   .content-page__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -337,6 +347,10 @@ main.content-page.container {
   .content-page {
     padding-top: 35px;
     padding-bottom: 80px;
+  }
+
+   .content-page__main-title {
+    margin-bottom: 35px;
   }
 
   .content-page .page-intro {
